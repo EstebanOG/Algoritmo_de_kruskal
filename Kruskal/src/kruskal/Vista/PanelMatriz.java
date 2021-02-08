@@ -8,7 +8,6 @@ package kruskal.Vista;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.List;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,14 +20,14 @@ import javax.swing.JTextField;
 public class PanelMatriz extends JPanel {
 
     int x = 0, y = 45, numPuntos = 0;
-    //private List<List<Integer>> parejasDeAristas = new ArrayList<>();
+    private ArrayList<String> parejasDeAristas = new ArrayList<>();
     JLabel lblTituloMatriz, lblTituloMatriz2;
     JTextField[] jTextField;
     String[][] matriz;
 
     public PanelMatriz() {
         setLayout(null);
-        setPreferredSize(new Dimension(800,520));
+        setPreferredSize(new Dimension(800, 520));
         setVisible(true);
         iniciarComponentes();
     }
@@ -42,7 +41,7 @@ public class PanelMatriz extends JPanel {
 
     public void generarMatriz(int numPuntos) {
         this.numPuntos = numPuntos;
-        
+
         jTextField = new JTextField[(numPuntos + 2) * (numPuntos * 2)];
         matriz = new String[numPuntos + 1][numPuntos + 1];
         for (int i = 0; i <= numPuntos; i++) {
@@ -86,29 +85,53 @@ public class PanelMatriz extends JPanel {
 
     private void crearJTextFields(int i, int j, int k) {
         jTextField[k] = new JTextField(matriz[i][j]);
-        if(k!=0)
-            jTextField[k].setBounds(x +((j + 1)*60), y + ((i + 1)*35), 50, 30);        
-        if(i == 0 || j == 0)
-            jTextField[k].setBackground(new Color(51,255,153));
-        
+        if (k != 0) {
+            jTextField[k].setBounds(x + ((j + 1) * 60), y + ((i + 1) * 35), 50, 30);
+        }
+        if (i == 0 || j == 0) {
+            jTextField[k].setBackground(new Color(51, 255, 153));
+        }
+
         add(jTextField[k]);
         this.repaint();
     }
-    
-    public void leerMatriz(){
+
+    public void leerMatriz() {
         int l = 0;
         for (int i = 0; i <= numPuntos; i++) {
             for (int j = 0; j <= numPuntos; j++) {
-                matriz[i][j]=jTextField[l].getText();
+                matriz[i][j] = jTextField[l].getText();
                 l++;
             }
         }
-        
+
         for (int i = 0; i <= numPuntos; i++) {
             for (int j = 0; j <= numPuntos; j++) {
                 System.out.print(matriz[i][j] + "-");
             }
             System.out.println("");
         }
+
+        parejasAristas();
     }
+
+    private void parejasAristas() {
+        for (int i = 0; i <= numPuntos; i++) {
+            for (int j = 0; j <= numPuntos; j++) {
+                if (i != 0 && j != 0) {
+                    if (!matriz[i][j].equals("X") && !matriz[i][j].equals("99") && !matriz[i][j].equals("0")) {
+                        parejasDeAristas.add(i + "-" + j + "-" + matriz[i][j]);
+                    }
+                }
+            }
+        }
+
+        System.out.println("Parejas de aristas:");
+        System.out.println(parejasDeAristas);
+    }
+
+    public ArrayList<String> getParejasDeAristas() {
+        return parejasDeAristas;
+    }
+
 }

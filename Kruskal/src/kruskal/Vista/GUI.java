@@ -135,6 +135,8 @@ public class GUI extends javax.swing.JFrame {
 
     private void btnKruskalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKruskalActionPerformed
         panelMatriz.leerMatriz();
+        panelResultados.setParejasDeAristas(panelMatriz.getParejasDeAristas());
+        panelResultados.colaPrioridad();
     }//GEN-LAST:event_btnKruskalActionPerformed
 
     /**

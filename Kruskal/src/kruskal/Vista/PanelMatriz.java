@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import logica.ParejasAristas;
 
 /**
  *
@@ -20,7 +21,7 @@ import javax.swing.JTextField;
 public class PanelMatriz extends JPanel {
 
     int x = 0, y = 45, numPuntos = 0;
-    private ArrayList<String> parejasDeAristas = new ArrayList<>();
+    private ArrayList<ParejasAristas> parejasDeAristas = new ArrayList<>();
     JLabel lblTituloMatriz, lblTituloMatriz2;
     JTextField[] jTextField;
     String[][] matriz;
@@ -116,11 +117,13 @@ public class PanelMatriz extends JPanel {
     }
 
     private void parejasAristas() {
+        int l = 0;
         for (int i = 0; i <= numPuntos; i++) {
             for (int j = 0; j <= numPuntos; j++) {
                 if (i != 0 && j != 0) {
                     if (!matriz[i][j].equals("X") && !matriz[i][j].equals("99") && !matriz[i][j].equals("0")) {
-                        parejasDeAristas.add(i + "-" + j + "-" + matriz[i][j]);
+                        parejasDeAristas.add(new ParejasAristas(i, j, Integer.parseInt(matriz[i][j])));
+
                     }
                 }
             }
@@ -128,9 +131,14 @@ public class PanelMatriz extends JPanel {
 
         System.out.println("Parejas de aristas:");
         System.out.println(parejasDeAristas);
+        parejasDeAristas.forEach((pa) -> {
+            System.out.println("Arista1:" + pa.getArista1());
+            System.out.println("Arista2:" + pa.getArista2());
+            System.out.println("Peso:" + pa.getPeso());
+        });
     }
 
-    public ArrayList<String> getParejasDeAristas() {
+    public ArrayList<ParejasAristas> getParejasDeAristas() {
         return parejasDeAristas;
     }
 

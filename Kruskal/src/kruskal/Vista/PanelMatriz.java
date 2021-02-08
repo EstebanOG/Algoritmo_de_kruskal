@@ -8,6 +8,8 @@ package kruskal.Vista;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.List;
+import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -19,6 +21,7 @@ import javax.swing.JTextField;
 public class PanelMatriz extends JPanel {
 
     int x = 0, y = 45, numPuntos = 0;
+    //private List<List<Integer>> parejasDeAristas = new ArrayList<>();
     JLabel lblTituloMatriz, lblTituloMatriz2;
     JTextField[] jTextField;
     String[][] matriz;
@@ -84,10 +87,28 @@ public class PanelMatriz extends JPanel {
     private void crearJTextFields(int i, int j, int k) {
         jTextField[k] = new JTextField(matriz[i][j]);
         if(k!=0)
-            jTextField[k].setBounds(x +((i + 1)*60), y + ((j + 1)*35), 50, 30);        
+            jTextField[k].setBounds(x +((j + 1)*60), y + ((i + 1)*35), 50, 30);        
         if(i == 0 || j == 0)
             jTextField[k].setBackground(new Color(51,255,153));
         
         add(jTextField[k]);
+        this.repaint();
+    }
+    
+    public void leerMatriz(){
+        int l = 0;
+        for (int i = 0; i <= numPuntos; i++) {
+            for (int j = 0; j <= numPuntos; j++) {
+                matriz[i][j]=jTextField[l].getText();
+                l++;
+            }
+        }
+        
+        for (int i = 0; i <= numPuntos; i++) {
+            for (int j = 0; j <= numPuntos; j++) {
+                System.out.print(matriz[i][j] + "-");
+            }
+            System.out.println("");
+        }
     }
 }

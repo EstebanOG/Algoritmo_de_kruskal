@@ -16,6 +16,7 @@ public class ColaDePrioridad {
     private Monticulo monticulo;
     private int tamanioMaximo;
     private int cantidadDeElementos;
+    private int tamanio;
 
     public int getTamaniooMaximo() {
         return tamanioMaximo;
@@ -40,8 +41,11 @@ public class ColaDePrioridad {
     }
     
     public void mostrarColaPrioridad(){
+        monticulo.mostrar();
         while(!estaVacia())
             System.out.println(eliminar().getPeso());
+        
+        
     }
     public void insertar(ParejasAristas nuevo) throws IllegalStateException {
         if (this.estaLlena()) {
@@ -65,4 +69,14 @@ public class ColaDePrioridad {
         }
         return this.monticulo.pispear();
     }
+
+    public Monticulo getMonticulo() {
+        return monticulo;
+    }
+
+    public int getTamanio() {
+        return tamanio;
+    }
+    
+    
 }

@@ -10,7 +10,7 @@ package logica;
  * @author Usuario
  */
 public class ParejasAristas {
-    private int arista1, arista2, peso;
+    private int arista1, arista2, peso,x,y;
     
     public ParejasAristas(){
         
@@ -19,6 +19,8 @@ public class ParejasAristas {
         this.arista1 = arista1;
         this.arista2 = arista2;
         this.peso = peso;
+        this.x=0;
+        this.y=0;
         
     }
 
@@ -44,6 +46,22 @@ public class ParejasAristas {
 
     public void setPeso(int peso) {
         this.peso = peso;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
     
 }

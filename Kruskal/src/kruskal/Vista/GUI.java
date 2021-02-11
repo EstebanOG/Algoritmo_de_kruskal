@@ -52,6 +52,8 @@ public class GUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setPreferredSize(new java.awt.Dimension(1094, 1300));
+
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         jLabel1.setText("Algoritmo de Kruskal");
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -104,7 +106,7 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(btnKruskal))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scrollMatriz, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(293, Short.MAX_VALUE))
+                .addContainerGap(748, Short.MAX_VALUE))
         );
 
         jScrollPane2.setViewportView(jPanel1);
@@ -135,8 +137,10 @@ public class GUI extends javax.swing.JFrame {
 
     private void btnKruskalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKruskalActionPerformed
         panelMatriz.leerMatriz();
+        panelResultados.setPuntos(panelPuntos.getPuntos());
         panelResultados.setParejasDeAristas(panelMatriz.getParejasDeAristas());
         panelResultados.colaPrioridad();
+        //panelResultados.dibujarGrafos();
     }//GEN-LAST:event_btnKruskalActionPerformed
 
     /**

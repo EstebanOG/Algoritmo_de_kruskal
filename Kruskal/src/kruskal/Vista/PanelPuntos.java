@@ -17,11 +17,12 @@ import javax.swing.border.LineBorder;
  * @author Usuario
  */
 public class PanelPuntos extends JPanel implements MouseListener{
-    
+    private Puntos[] puntos;
     private int numPuntos = 0;
     private JLabel[] lblPuntos;
     public PanelPuntos(){
         lblPuntos = new JLabel[12];
+        puntos = new Puntos[12];
         setLayout(null);
         addMouseListener(this);
         setBounds(12,97,614,323);
@@ -60,9 +61,14 @@ public class PanelPuntos extends JPanel implements MouseListener{
     }
     
     private void generarPunto(int x, int y){
+        puntos[numPuntos-1] = new Puntos(x,y);
         lblPuntos[numPuntos-1] = new JLabel(numPuntos+"");
         lblPuntos[numPuntos-1].setBounds(x, y, 14, 14);
         add(lblPuntos[numPuntos-1]);
         this.repaint();
+    }
+
+    public Puntos[] getPuntos() {
+        return puntos;
     }
 }

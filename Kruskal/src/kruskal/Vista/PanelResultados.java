@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
@@ -22,9 +24,12 @@ import logica.colaDePrioridad.Monticulo;
  */
 public class PanelResultados extends JPanel {
 
+    private ArrayList<HashSet<Integer>> sets = new ArrayList<HashSet<Integer>>();
+    private HashSet setAristas = new HashSet();
     private Monticulo monticulo;
     private Puntos[] puntos;
     private JLabel[] pesoCamino = new JLabel[12];
+    private JLabel[] pesoCamino2 = new JLabel[12];
     private JLabel[] aristas = new JLabel[12];
     private JLabel[] aristas2 = new JLabel[12];
     private int tamanio, k;
@@ -33,6 +38,7 @@ public class PanelResultados extends JPanel {
     private boolean dibujarLineasGrafo = false;
     private ParejasAristas[] parejasLineas = new ParejasAristas[30];
     private ArrayList<ParejasAristas> parejasDeAristas = new ArrayList<>();
+    private ArrayList<ParejasAristas> parejasSolucion = new ArrayList<>();
     private ArrayList<ParejasAristas> parejasDeAristasInsertadas = new ArrayList<>();
 
     public PanelResultados() {
@@ -94,6 +100,54 @@ public class PanelResultados extends JPanel {
             }
         }
         this.graficarLineas = true;
+        obtenerSumaMin();
+
+        int indx = 0;
+        for (Puntos punto : puntos) {
+            if (punto != null) {
+                System.out.println(indx);
+                HashSet e = new HashSet<Integer>();
+                e.add(indx + 1);
+                sets.add(e);
+                indx++;
+            }
+        }
+        System.out.println(sets);
+        ParejasAristas paTemp = new ParejasAristas();
+        int a = 0, b = 0, c = 0, ind = 0;
+        while (sets.size() != 1) {
+
+            paTemp = cp.eliminar();
+            System.out.println(paTemp.getArista1());
+            System.out.println(paTemp.getArista2());
+            for (HashSet f : sets) {
+                if (f.contains(paTemp.getArista1())) {
+                    a = ind;
+                    System.out.println("Primer if");
+                }
+
+                if (f.contains(paTemp.getArista2())) {
+                    b = ind;
+                    System.out.println("Segundo if");
+                }
+                ind++;
+            }
+            ind = 0;
+            System.out.println("a:" + a + " b:" + b);
+            if (a == b) {
+                //parejasSolucion.add(paTemp);
+                System.out.println("Iguales");
+            } else {
+                parejasSolucion.add(paTemp);
+                sets.get(a).addAll(sets.get(b));
+                sets.remove(b);
+            }
+            System.out.println(sets);
+            System.out.println("a:" + a + " b:" + b);
+            a = 0;
+            b = 0;
+        }
+        System.out.println("paSol:" + parejasSolucion);
         dibujarGrafos();
     }
 
@@ -113,7 +167,7 @@ public class PanelResultados extends JPanel {
 
     private void agregarNodoArbol(ParejasAristas nodo, int j, int x, int y) {
         System.out.println(nodo.getPeso() + "Peso.");
-        nodos[j] = new JLabel("<html>" + String.valueOf(nodo.getPeso()) + "<br>" + String.valueOf(nodo.getArista1()) + "<br>" + String.valueOf(nodo.getArista2()) + "</html>");
+        nodos[j] = new JLabel("<html><font color=\"red\">" + String.valueOf(nodo.getPeso()) + "</font><br>" + String.valueOf(nodo.getArista1()) + "<br>" + String.valueOf(nodo.getArista2()) + "</html>");
         nodos[j].setBounds(x, y, 20, 45);
         add(nodos[j]);
         this.repaint();
@@ -139,6 +193,10 @@ public class PanelResultados extends JPanel {
             for (ParejasAristas pda : parejasDeAristas) {
                 g.drawLine(aristas[pda.getArista1() - 1].getX(), aristas[pda.getArista1() - 1].getY(), aristas[pda.getArista2() - 1].getX(), aristas[pda.getArista2() - 1].getY());
             }
+            for (ParejasAristas pda : parejasSolucion) {
+                System.out.println("Aca deberia");
+                g.drawLine(aristas2[pda.getArista1() - 1].getX(), aristas2[pda.getArista1() - 1].getY(), aristas2[pda.getArista2() - 1].getX(), aristas2[pda.getArista2() - 1].getY());
+            }
         }
 
     }
@@ -155,45 +213,83 @@ public class PanelResultados extends JPanel {
                 add(aristas2[x]);
                 this.repaint();
             }
-            
+
             x++;
         }
         for (ParejasAristas pda : parejasDeAristas) {
-                // Se verifique qué arita está abajo o arriba.
-                pesoCamino[a] = new JLabel(pda.getPeso() + "");
-                pesoCamino[a].setForeground(Color.red);
-                System.out.println("");
-                if (aristas[pda.getArista1() - 1].getX() == aristas[pda.getArista2() - 1].getX() && aristas[pda.getArista1() - 1].getY() < aristas[pda.getArista2() - 1].getY()) {
-                    pesoCamino[a].setBounds(pesoCamino[pda.getArista2() - 1].getX(), (pesoCamino[pda.getArista2() - 1].getY() - pesoCamino[pda.getArista1() - 1].getY()) / 2, 20, 45);
-                } else if (aristas[pda.getArista1() - 1].getX() < aristas[pda.getArista2() - 1].getX() && aristas[pda.getArista1() - 1].getY() > aristas[pda.getArista2() - 1].getY()) {
-                    pesoCamino[a].setBounds(((aristas[pda.getArista2() - 1].getX() - aristas[pda.getArista1() - 1].getX()) / 2) +aristas[pda.getArista1() - 1].getX(), ((aristas[pda.getArista1() - 1].getY() - aristas[pda.getArista2() - 1].getY()) / 2)+aristas[pda.getArista2() - 1].getY()-15, 20, 45);
-                } else if(aristas[pda.getArista1() - 1].getX() < aristas[pda.getArista2() - 1].getX() && aristas[pda.getArista1() - 1].getY() == aristas[pda.getArista2() - 1].getY()){
-                    // 2
-                    pesoCamino[a].setBounds(((aristas[pda.getArista2() - 1].getX() - aristas[pda.getArista1() - 1].getX()) / 2) +aristas[pda.getArista1() - 1].getX(), aristas[pda.getArista1() - 1].getY(), 20, 45);
-                }else if (aristas[pda.getArista1() - 1].getX() < aristas[pda.getArista2() - 1].getX() && aristas[pda.getArista1() - 1].getY() < aristas[pda.getArista2() - 1].getY()){
-                    // 3
-                    pesoCamino[a].setBounds(((aristas[pda.getArista2() - 1].getX() - aristas[pda.getArista1() - 1].getX()) / 2) +aristas[pda.getArista1() - 1].getX(), ((aristas[pda.getArista2() - 1].getY() - aristas[pda.getArista1() - 1].getY()) / 2)+aristas[pda.getArista1() - 1].getY()-5, 20, 45);
-                }else if (aristas[pda.getArista1() - 1].getX() == aristas[pda.getArista2() - 1].getX() && aristas[pda.getArista1() - 1].getY() < aristas[pda.getArista2() - 1].getY()){
-                    // 4
-                    pesoCamino[a].setBounds(aristas[pda.getArista1() - 1].getX()-15, ((aristas[pda.getArista2() - 1].getY() - aristas[pda.getArista2() - 1].getY()) / 2)+aristas[pda.getArista1() - 1].getY(), 20, 45);
-                }else if(aristas[pda.getArista1() - 1].getX() > aristas[pda.getArista2() - 1].getX() && aristas[pda.getArista1() - 1].getY() < aristas[pda.getArista2() - 1].getY()){
-                    // 5
-                    pesoCamino[a].setBounds(((aristas[pda.getArista1() - 1].getX() - aristas[pda.getArista2() - 1].getX()) / 2) +aristas[pda.getArista2() - 1].getX(), ((aristas[pda.getArista2() - 1].getY() - aristas[pda.getArista1() - 1].getY()) / 2)+aristas[pda.getArista1() - 1].getY()-10, 20, 45);
-                }else if(aristas[pda.getArista1() - 1].getX() > aristas[pda.getArista2() - 1].getX() && aristas[pda.getArista1() - 1].getY() == aristas[pda.getArista2() - 1].getY()){
-                    // 6
-                    pesoCamino[a].setBounds(((aristas[pda.getArista1() - 1].getX() - aristas[pda.getArista2() - 1].getX()) / 2) +aristas[pda.getArista2() - 1].getX(), aristas[pda.getArista2() - 1].getY()-5, 20, 45);
-                }else if(aristas[pda.getArista1() - 1].getX() > aristas[pda.getArista2() - 1].getX() && aristas[pda.getArista1() - 1].getY() > aristas[pda.getArista2() - 1].getY()){
-                    // 7
-                    pesoCamino[a].setBounds(((aristas[pda.getArista1() - 1].getX() - aristas[pda.getArista2() - 1].getX()) / 2) +aristas[pda.getArista2() - 1].getX(), ((aristas[pda.getArista1() - 1].getY() - aristas[pda.getArista2() - 1].getY()) / 2)+aristas[pda.getArista2() - 1].getY()-5, 20, 45);
-                }
-
-                add(pesoCamino[a]);
-                this.repaint();
-                a++;
-
-                //g.drawLine(aristas[pda.getArista1()-1].getX(), aristas[pda.getArista1()-1].getY(), aristas[pda.getArista2()-1].getX(), aristas[pda.getArista2()-1].getY());
+            // Se verifique qué arita está abajo o arriba.
+            pesoCamino[a] = new JLabel(pda.getPeso() + "");
+            pesoCamino[a].setForeground(Color.red);
+            System.out.println("");
+            if (aristas[pda.getArista1() - 1].getX() == aristas[pda.getArista2() - 1].getX() && aristas[pda.getArista1() - 1].getY() < aristas[pda.getArista2() - 1].getY()) {
+                pesoCamino[a].setBounds(pesoCamino[pda.getArista2() - 1].getX(), (pesoCamino[pda.getArista2() - 1].getY() - pesoCamino[pda.getArista1() - 1].getY()) / 2, 20, 45);
+            } else if (aristas[pda.getArista1() - 1].getX() < aristas[pda.getArista2() - 1].getX() && aristas[pda.getArista1() - 1].getY() > aristas[pda.getArista2() - 1].getY()) {
+                pesoCamino[a].setBounds(((aristas[pda.getArista2() - 1].getX() - aristas[pda.getArista1() - 1].getX()) / 2) + aristas[pda.getArista1() - 1].getX(), ((aristas[pda.getArista1() - 1].getY() - aristas[pda.getArista2() - 1].getY()) / 2) + aristas[pda.getArista2() - 1].getY() - 15, 20, 45);
+            } else if (aristas[pda.getArista1() - 1].getX() < aristas[pda.getArista2() - 1].getX() && aristas[pda.getArista1() - 1].getY() == aristas[pda.getArista2() - 1].getY()) {
+                // 2
+                pesoCamino[a].setBounds(((aristas[pda.getArista2() - 1].getX() - aristas[pda.getArista1() - 1].getX()) / 2) + aristas[pda.getArista1() - 1].getX(), aristas[pda.getArista1() - 1].getY(), 20, 45);
+            } else if (aristas[pda.getArista1() - 1].getX() < aristas[pda.getArista2() - 1].getX() && aristas[pda.getArista1() - 1].getY() < aristas[pda.getArista2() - 1].getY()) {
+                // 3
+                pesoCamino[a].setBounds(((aristas[pda.getArista2() - 1].getX() - aristas[pda.getArista1() - 1].getX()) / 2) + aristas[pda.getArista1() - 1].getX(), ((aristas[pda.getArista2() - 1].getY() - aristas[pda.getArista1() - 1].getY()) / 2) + aristas[pda.getArista1() - 1].getY() - 5, 20, 45);
+            } else if (aristas[pda.getArista1() - 1].getX() == aristas[pda.getArista2() - 1].getX() && aristas[pda.getArista1() - 1].getY() < aristas[pda.getArista2() - 1].getY()) {
+                // 4
+                pesoCamino[a].setBounds(aristas[pda.getArista1() - 1].getX() - 15, ((aristas[pda.getArista2() - 1].getY() - aristas[pda.getArista2() - 1].getY()) / 2) + aristas[pda.getArista1() - 1].getY(), 20, 45);
+            } else if (aristas[pda.getArista1() - 1].getX() > aristas[pda.getArista2() - 1].getX() && aristas[pda.getArista1() - 1].getY() < aristas[pda.getArista2() - 1].getY()) {
+                // 5
+                pesoCamino[a].setBounds(((aristas[pda.getArista1() - 1].getX() - aristas[pda.getArista2() - 1].getX()) / 2) + aristas[pda.getArista2() - 1].getX(), ((aristas[pda.getArista2() - 1].getY() - aristas[pda.getArista1() - 1].getY()) / 2) + aristas[pda.getArista1() - 1].getY() - 10, 20, 45);
+            } else if (aristas[pda.getArista1() - 1].getX() > aristas[pda.getArista2() - 1].getX() && aristas[pda.getArista1() - 1].getY() == aristas[pda.getArista2() - 1].getY()) {
+                // 6
+                pesoCamino[a].setBounds(((aristas[pda.getArista1() - 1].getX() - aristas[pda.getArista2() - 1].getX()) / 2) + aristas[pda.getArista2() - 1].getX(), aristas[pda.getArista2() - 1].getY() - 5, 20, 45);
+            } else if (aristas[pda.getArista1() - 1].getX() > aristas[pda.getArista2() - 1].getX() && aristas[pda.getArista1() - 1].getY() > aristas[pda.getArista2() - 1].getY()) {
+                // 7
+                pesoCamino[a].setBounds(((aristas[pda.getArista1() - 1].getX() - aristas[pda.getArista2() - 1].getX()) / 2) + aristas[pda.getArista2() - 1].getX(), ((aristas[pda.getArista1() - 1].getY() - aristas[pda.getArista2() - 1].getY()) / 2) + aristas[pda.getArista2() - 1].getY() - 5, 20, 45);
             }
+
+            add(pesoCamino[a]);
+            this.repaint();
+            a++;
+
+        }
+        a=0;
+        for (ParejasAristas pda : parejasSolucion) {
+            // Se verifique qué arita está abajo o arriba.
+            pesoCamino2[a] = new JLabel(pda.getPeso() + "");
+            pesoCamino2[a].setForeground(Color.red);
+            System.out.println("");
+            if (aristas2[pda.getArista1() - 1].getX() == aristas2[pda.getArista2() - 1].getX() && aristas2[pda.getArista1() - 1].getY() < aristas2[pda.getArista2() - 1].getY()) {
+                pesoCamino2[a].setBounds(pesoCamino2[pda.getArista2() - 1].getX(), (pesoCamino2[pda.getArista2() - 1].getY() - pesoCamino2[pda.getArista1() - 1].getY()) / 2, 20, 45);
+            } else if (aristas2[pda.getArista1() - 1].getX() < aristas2[pda.getArista2() - 1].getX() && aristas2[pda.getArista1() - 1].getY() > aristas2[pda.getArista2() - 1].getY()) {
+                pesoCamino2[a].setBounds(((aristas2[pda.getArista2() - 1].getX() - aristas2[pda.getArista1() - 1].getX()) / 2) + aristas2[pda.getArista1() - 1].getX(), ((aristas2[pda.getArista1() - 1].getY() - aristas2[pda.getArista2() - 1].getY()) / 2) + aristas2[pda.getArista2() - 1].getY() - 15, 20, 45);
+            } else if (aristas2[pda.getArista1() - 1].getX() < aristas2[pda.getArista2() - 1].getX() && aristas2[pda.getArista1() - 1].getY() == aristas2[pda.getArista2() - 1].getY()) {
+                // 2
+                pesoCamino2[a].setBounds(((aristas2[pda.getArista2() - 1].getX() - aristas2[pda.getArista1() - 1].getX()) / 2) + aristas2[pda.getArista1() - 1].getX(), aristas2[pda.getArista1() - 1].getY(), 20, 45);
+            } else if (aristas2[pda.getArista1() - 1].getX() < aristas2[pda.getArista2() - 1].getX() && aristas2[pda.getArista1() - 1].getY() < aristas2[pda.getArista2() - 1].getY()) {
+                // 3
+                pesoCamino2[a].setBounds(((aristas2[pda.getArista2() - 1].getX() - aristas2[pda.getArista1() - 1].getX()) / 2) + aristas2[pda.getArista1() - 1].getX(), ((aristas2[pda.getArista2() - 1].getY() - aristas2[pda.getArista1() - 1].getY()) / 2) + aristas2[pda.getArista1() - 1].getY() - 5, 20, 45);
+            } else if (aristas[pda.getArista1() - 1].getX() == aristas2[pda.getArista2() - 1].getX() && aristas2[pda.getArista1() - 1].getY() < aristas2[pda.getArista2() - 1].getY()) {
+                // 4
+                pesoCamino2[a].setBounds(aristas2[pda.getArista1() - 1].getX() - 15, ((aristas2[pda.getArista2() - 1].getY() - aristas2[pda.getArista2() - 1].getY()) / 2) + aristas2[pda.getArista1() - 1].getY(), 20, 45);
+            } else if (aristas2[pda.getArista1() - 1].getX() > aristas2[pda.getArista2() - 1].getX() && aristas2[pda.getArista1() - 1].getY() < aristas2[pda.getArista2() - 1].getY()) {
+                // 5
+                pesoCamino2[a].setBounds(((aristas2[pda.getArista1() - 1].getX() - aristas2[pda.getArista2() - 1].getX()) / 2) + aristas2[pda.getArista2() - 1].getX(), ((aristas2[pda.getArista2() - 1].getY() - aristas2[pda.getArista1() - 1].getY()) / 2) + aristas2[pda.getArista1() - 1].getY() - 10, 20, 45);
+            } else if (aristas2[pda.getArista1() - 1].getX() > aristas2[pda.getArista2() - 1].getX() && aristas2[pda.getArista1() - 1].getY() == aristas2[pda.getArista2() - 1].getY()) {
+                // 6
+                pesoCamino2[a].setBounds(((aristas2[pda.getArista1() - 1].getX() - aristas2[pda.getArista2() - 1].getX()) / 2) + aristas2[pda.getArista2() - 1].getX(), aristas2[pda.getArista2() - 1].getY() - 5, 20, 45);
+            } else if (aristas2[pda.getArista1() - 1].getX() > aristas2[pda.getArista2() - 1].getX() && aristas2[pda.getArista1() - 1].getY() > aristas2[pda.getArista2() - 1].getY()) {
+                // 7
+                pesoCamino2[a].setBounds(((aristas2[pda.getArista1() - 1].getX() - aristas2[pda.getArista2() - 1].getX()) / 2) + aristas2[pda.getArista2() - 1].getX(), ((aristas2[pda.getArista1() - 1].getY() - aristas2[pda.getArista2() - 1].getY()) / 2) + aristas2[pda.getArista2() - 1].getY() - 5, 20, 45);
+            }
+
+            add(pesoCamino2[a]);
+            this.repaint();
+            a++;
+
+        }
         this.dibujarLineasGrafo = true;
+
+    }
+
+    public void obtenerSumaMin() {
 
     }
 

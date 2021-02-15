@@ -45,7 +45,6 @@ public class GUI extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        btnBorrarPuntos = new javax.swing.JButton();
         btnMatrizAdyacencia = new javax.swing.JButton();
         btnKruskal = new javax.swing.JButton();
         scrollMatriz = new javax.swing.JScrollPane();
@@ -57,8 +56,6 @@ public class GUI extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         jLabel1.setText("Algoritmo de Kruskal");
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        btnBorrarPuntos.setText("Borrar puntos");
 
         btnMatrizAdyacencia.setText("Matriz de adyacencia");
         btnMatrizAdyacencia.addActionListener(new java.awt.event.ActionListener() {
@@ -86,10 +83,8 @@ public class GUI extends javax.swing.JFrame {
                         .addGap(620, 620, 620)
                         .addComponent(scrollMatriz, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnBorrarPuntos)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnMatrizAdyacencia)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(btnKruskal)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -101,7 +96,6 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnBorrarPuntos)
                     .addComponent(btnMatrizAdyacencia)
                     .addComponent(btnKruskal))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -179,7 +173,6 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBorrarPuntos;
     private javax.swing.JButton btnKruskal;
     private javax.swing.JButton btnMatrizAdyacencia;
     private javax.swing.JLabel jLabel1;

@@ -64,10 +64,8 @@
                               <Component id="scrollMatriz" pref="462" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
-                              <Component id="btnBorrarPuntos" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnMatrizAdyacencia" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="btnKruskal" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -83,7 +81,6 @@
                       <Component id="jLabel1" min="-2" pref="41" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnBorrarPuntos" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnMatrizAdyacencia" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnKruskal" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -106,11 +103,6 @@
                     <LineBorder/>
                   </Border>
                 </Property>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="btnBorrarPuntos">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Borrar puntos"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btnMatrizAdyacencia">

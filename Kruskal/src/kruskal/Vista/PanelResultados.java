@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import logica.ParejasAristas;
@@ -251,8 +252,10 @@ public class PanelResultados extends JPanel {
 
         }
         a=0;
+        int suma = 0;
         for (ParejasAristas pda : parejasSolucion) {
             // Se verifique qué arita está abajo o arriba.
+            suma += pda.getPeso();
             pesoCamino2[a] = new JLabel(pda.getPeso() + "");
             pesoCamino2[a].setForeground(Color.red);
             System.out.println("");
@@ -286,7 +289,8 @@ public class PanelResultados extends JPanel {
 
         }
         this.dibujarLineasGrafo = true;
-
+        JOptionPane.showMessageDialog(null, "Suma min:"+suma);
+        System.out.println("Suma:"+suma);
     }
 
     public void obtenerSumaMin() {

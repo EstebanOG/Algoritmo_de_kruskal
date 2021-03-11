@@ -29,8 +29,8 @@ public class PanelResultados extends JPanel {
     private HashSet setAristas = new HashSet();
     private Monticulo monticulo;
     private Puntos[] puntos;
-    private JLabel[] pesoCamino = new JLabel[12];
-    private JLabel[] pesoCamino2 = new JLabel[12];
+    private JLabel[] pesoCamino = new JLabel[30];
+    private JLabel[] pesoCamino2 = new JLabel[30];
     private JLabel[] aristas = new JLabel[12];
     private JLabel[] aristas2 = new JLabel[12];
     private int tamanio, k;
